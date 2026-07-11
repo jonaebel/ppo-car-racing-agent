@@ -1,5 +1,5 @@
-import torch
+import torch.nn.functional as F
 
 
 def relu(x):
-    return torch.maximum(x, torch.zeros_like(x))
+    return F.relu(x)

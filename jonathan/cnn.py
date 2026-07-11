@@ -1,4 +1,5 @@
 # Visual Encoder layer -> Convolutional Network
+# CNN Network is based in Atari DQN architecture (https://arxiv.org/pdf/1312.5602) from 2013
 # Gets 96 x 96 RGB pixel grid as input and converts them into one 512 dimensional Vector which
 # gets presented to the decion making instance (ppo_agent.py)
 # https://cs231n.github.io/convolutional-networks/
@@ -16,40 +17,44 @@
 # → CONV → RELU        detects edges
 # → CONV → RELU        detects road shape
 # → CONV → RELU        detects track ahead
-# → CONV → RELU        derects what else is needed
 
 # → FLATTEN
 # → FC → RELU          compress to 512
 # → output to ppo_agent.py
 
 import torch
+import torch.nn as nn
 import torch.nn.functional as F
 
-from jonathan.Functions import ReLu
-from jonathan.Functions.Linear import Linear
-from jonathan.layers import Conv2d
 
+class CNNFeatureExtractor(nn.Module):
+    def __init__(self, obs_shape=(4, 96, 96)):
+        super().__init__()
+        self.conv1 = nn.Conv2d(obs_shape[0], 32, kernel_size=8, stride=4)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
+        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
 
-class CNNFeatureExtractor:
-    def __init__(self):
-        self.conv1 = Conv2d(4, 32, kernel_size=8, stride=4)
-        self.conv2 = Conv2d(32, 64, kernel_size=4, stride=2)
-        self.conv3 = Conv2d(64, 64, kernel_size=3, stride=1)
-        self.linear = Linear(4096, 512)
+        # Kaiming init for ReLU activations
+        for layer in [self.conv1, self.conv2, self.conv3]:
+            nn.init.kaiming_uniform_(layer.weight, nonlinearity="relu")
+            nn.init.zeros_(layer.bias)
 
-    def forward(self, x):
-        x = ReLu(self.conv1.forward(x))
-        x = ReLu(self.conv2.forward(x))
-        x = ReLu(self.conv3.forward(x))
-        x = x.flatten(start_dim=1)      # (batch, 4096)
-        x = ReLu(self.linear.forward(x)) # (batch, 512)
+        # Compute flatten size dynamically — stays correct if obs_shape or kernels change
+        with torch.no_grad():
+            dummy = torch.zeros(1, *obs_shape)
+            n_flat = self._conv_forward(dummy).shape[1]
+
+        self.linear = nn.Linear(n_flat, 512)
+        nn.init.kaiming_uniform_(self.linear.weight, nonlinearity="relu")
+        nn.init.zeros_(self.linear.bias)
+
+    def _conv_forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
+        x = F.relu(self.conv3(x))
+        return x.flatten(start_dim=1)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self._conv_forward(x)         # (batch, n_flat)
+        x = F.relu(self.linear(x))        # (batch, 512)
         return x
-
-    def parameters(self):
-        # Collect all learnable parameters for the optimizer    
-        return (
-            list(self.conv1.weight) + [self.conv1.bias] +
-            list(self.conv2.weight) + [self.conv2.bias] +
-            list(self.conv3.weight) + [self.conv3.bias] +
-            [self.linear.weight, self.linear.bias]
-        )

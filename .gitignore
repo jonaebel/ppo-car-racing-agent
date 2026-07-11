@@ -1,0 +1,225 @@
+# ============================================================
+#  Python
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ============================================================
+#  Virtual Environments
+# ============================================================
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+conda-env/
+
+# ============================================================
+#  Jupyter Notebooks
+# ============================================================
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+*.ipynb_checkpoints
+profile_default/
+ipython_config.py
+
+# ============================================================
+#  ML / Training Artifacts
+# ============================================================
+
+# Model checkpoints & weights
+checkpoints/
+*.pth
+*.ckpt
+*.h5
+*.pkl
+*.joblib
+*.safetensors
+
+# Training runs & logs
+runs/
+logs/
+*.log
+lightning_logs/
+mlruns/
+
+# Weights & Biases
+wandb/
+.wandb/
+
+# TensorBoard
+tb_logs/
+events.out.tfevents.*
+
+# ============================================================
+#  Data
+# ============================================================
+data/raw/
+data/processed/
+data/external/
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.hdf5
+*.h5
+*.npy
+*.npz
+*.arrow
+
+# ============================================================
+#  Videos & GIFs (generated during eval)
+# ============================================================
+videos/
+recordings/
+*.mp4
+*.avi
+*.gif
+*.mov
+
+# ============================================================
+#  Gymnasium / Rendering
+# ============================================================
+render_output/
+frames/
+
+# ============================================================
+#  Secrets & Config
+# ============================================================
+.env
+.env.*
+*.env
+secrets.yaml
+secrets.json
+config/local.yaml
+config/local.json
+credentials/
+
+# ============================================================
+#  OS
+# ============================================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encdata
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ============================================================
+#  IDEs & Editors
+# ============================================================
+
+# VSCode
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# PyCharm / JetBrains
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Vim
+*.swp
+*.swo
+*~
+Session.vim
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Spyder
+.spyderproject.db
+.spyproject
+
+# Rope
+.ropeproject
+
+# ============================================================
+#  Testing & Coverage
+# ============================================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+nosetests.xml
+test-results/
+
+# ============================================================
+#  Profiling
+# ============================================================
+*.prof
+*.lprof
+profile_output/
+
+# ============================================================
+#  Docs
+# ============================================================
+docs/_build/
+site/
+
+# ============================================================
+#  Misc
+# ============================================================
+*.bak
+*.tmp
+*.temp
+*.orig
+*.rej
+.cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+cython_debug/
